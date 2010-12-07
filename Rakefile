@@ -1,10 +1,11 @@
 require "benchmark"
 require "rubygems"
-Gem::manage_gems
+require 'rubygems/package_task'
+
 require "rake"
 require "rake/testtask"
 require "rake/rdoctask"
-require "rake/gempackagetask"
+#require "rake/gempackagetask"
 
 
 
@@ -39,15 +40,15 @@ gem_spec = Gem::Specification.new do |spec|
   end
   raise RuntimeError, "Can't find version number in changelog" unless version
 
-  spec.name = "scrapi"
+  spec.name = "scrapi-noah"
   spec.version = version
   spec.summary = "scrAPI toolkit for Ruby. Uses CSS selectors to write easy, maintainable HTML scraping rules."
   spec.description = <<-EOF
 scrAPI is an HTML scraping toolkit for Ruby. It uses CSS selectors to write easy, maintainable scraping rules to select, extract and store data from HTML content.
 EOF
-  spec.author = "Assaf Arkin"
+  spec.author = "Assaf Arkin / Noah Magram"
   spec.email = "assaf.arkin@gmail.com"
-  spec.homepage = "http://blog.labnotes.org/category/scrapi/"
+  spec.homepage = "https://github.com/noahhaon/scrapi"
 
   spec.files = FileList["{test,lib}/**/*", "README", "CHANGELOG", "Rakefile", "MIT-LICENSE"].to_a
   spec.require_path = "lib"
@@ -60,7 +61,7 @@ EOF
   spec.rubyforge_project = "scrapi"
 end
 
-gem = Rake::GemPackageTask.new(gem_spec) do |pkg|
+gem = Gem::PackageTask.new(gem_spec) do |pkg|
   pkg.need_tar = true
   pkg.need_zip = true
 end
