@@ -77,7 +77,7 @@ module Scraper
     end
 
 
-    Page = Struct.new(:url, :content, :encoding, :last_modified, :etag)
+    Page = Struct.new(:url, :content, :encoding, :last_modified, :etag, :cookies)
     Parsed = Struct.new(:document, :encoding)
 
 
@@ -130,6 +130,7 @@ module Scraper
         # TODO: Specify which content types are accepted.
         # TODO: GZip support.
         headers = {}
+        headers["Cookie"] = options[:cookies] if options[:cookies]
         headers["User-Agent"] = options[:user_agent] if options[:user_agent]
         headers["Last-Modified"] = options[:last_modified] if options[:last_modified]
         headers["ETag"] = options[:etag] if options[:etag]
@@ -148,7 +149,7 @@ module Scraper
           end
         end
         return Page[(options[:source_url] || uri), response.body, encoding,
-                    response["Last-Modified"], response["ETag"]]
+                    response["Last-Modified"], response["ETag"], response["Cookie"]]
       when Net::HTTPNotModified
         return Page[(options[:source_url] || uri), nil, nil,
                     options[:last_modified], options[:etag]]
@@ -156,11 +157,13 @@ module Scraper
         return read_page(response["location"], # New URL takes effect
                          :last_modified=>options[:last_modified],
                          :etag=>options[:etag],
+                         :cookies=>options[:cookies],
                          :redirect_limit=>redirect_limit-1)
       when Net::HTTPRedirection
         return read_page(response["location"],
                          :last_modified=>options[:last_modified],
                          :etag=>options[:etag],
+                         :cookies=>options[:cookies],
                          :redirect_limit=>redirect_limit-1,
                          :source_url=>(options[:source_url] || uri)) # Old URL still in effect
       when Net::HTTPNotFound

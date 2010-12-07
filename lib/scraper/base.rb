@@ -24,7 +24,7 @@ module Scraper
     # * <tt>last_modified</tt> -- Value of the Last-Modified header returned
     #   from the server.
     # * <tt>etag</tt> -- Value of the Etag header returned from the server.
-    PageInfo = Struct.new(:url, :original_url, :encoding, :last_modified, :etag)
+    PageInfo = Struct.new(:url, :original_url, :encoding, :last_modified, :etag, :cookies)
 
 
     class << self
@@ -684,7 +684,7 @@ module Scraper
 
 
     unless const_defined? :READER_OPTIONS
-      READER_OPTIONS = [:last_modified, :etag, :redirect_limit, :user_agent, :timeout]
+      READER_OPTIONS = [:last_modified, :etag, :redirect_limit, :user_agent, :timeout, :cookies]
     end
 
 
@@ -879,6 +879,7 @@ module Scraper
         @page_info.last_modified = page.last_modified
         @page_info.etag = page.etag
         @page_info.encoding = page.encoding
+        @page_info.cookies = page.cookies
         @document = page.content
       end
     end
