@@ -1,3 +1,17 @@
+== NOTES
+
+This is a fork of aasaf's scrapi-1.2.0 gem.  The intent of the fork was to
+support handling of cookies.  
+
+You may pass in your cookie string in the Scrapi.scrape options hash like
+so:
+
+scraper.scrape(url,	:user_agent => 'Mosaic for Amiga/1.2', 
+			:cookies => 'chocolate_chip=1; peanut_butter=5;' )
+
+
+
+
 == ScrAPI toolkit for Ruby
 
 A framework for writing scrapers using CSS selectors and simple
@@ -38,7 +52,7 @@ And using the scraper:
 
 To get the latest source code with regular updates:
 
-svn co http://labnotes.org/svn/public/ruby/scrapi
+git clone git@github.com:noahhaon/scrapi.git
 
 
 == Using TIDY
